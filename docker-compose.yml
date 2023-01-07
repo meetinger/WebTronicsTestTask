@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  postgres_db:
+    container_name: wb_postgres_container
+    image: postgres:15.1
+    environment:
+      POSTGRES_DB: djangoLearning
+      POSTGRES_USER: userDB
+      POSTGRES_PASSWORD: passwordDB
+      PGDATA: "pgdata"
+    volumes:
+      - ./postgres:/postgres
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    networks:
+      - postgres
+
+  pgadmin:
+    container_name: wb_pgadmin_container
+    image: dpage/pgadmin4:6.17
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgAdmin@pg.com
+      PGADMIN_DEFAULT_PASSWORD: pgAdminPassword
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - ./pgadmin:/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    networks:
+      - postgres
+
+networks:
+  postgres:
+      driver: bridge
