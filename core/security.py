@@ -42,11 +42,7 @@ class TokenUtils:
 
     @staticmethod
     def decode_token(token: str) -> dict | None:
-        try:
-            return jwt.decode(token, key=settings.SECRET_KEY, algorithms=[settings.ALGORITHM,])
-        except JWTError as e:
-            logging.error('Error while token decoding!', exc_info=e)
-            return None
+        return jwt.decode(token, key=settings.SECRET_KEY, algorithms=[settings.ALGORITHM,])
 
     @staticmethod
     def create_token_pair(data: dict) -> dict:

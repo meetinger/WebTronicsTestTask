@@ -1,10 +1,9 @@
 import logging
-from pprint import pprint
 
 import sqlalchemy
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from core.security import PasswordUtils, TokenUtils
@@ -17,6 +16,27 @@ from schemas.users import UserOut, UserIn, Token
 router = APIRouter(prefix="/auth", tags=['auth'])
 
 logger = logging.getLogger(__name__)
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
+
+
+def get_current_user_from_token(token: str = Depends(oauth2_scheme),
+                                db: Session = Depends(get_db)) -> sqlalchemy.orm.query.Query:
+    """Получение юзера из токена"""
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Could not validate credentials",
+    )
+    try:
+        payload = TokenUtils.decode_token(token)
+        username = payload['username']
+    except Exception as e:
+        logger.error(msg='Error while getting user from token', exc_info=e)
+        raise credentials_exception
+    user = get_user(username=username, db=db)
+    if user is None:
+        raise credentials_exception
+    return user
 
 
 def authenticate_user(username: str, password: str, db: Session) -> sqlalchemy.orm.query.Query | bool:
@@ -46,6 +66,7 @@ async def register(user: UserIn, db: Session = Depends(get_db)):
         logger.error(msg='Error Insert in to DB', exc_info=e)
         raise HTTPException(status_code=500, detail=f'Internal Server Error: {e}', )
 
+
 @router.post('/get_token', response_model=Token)
 async def get_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     """Получение пары токенов"""
@@ -57,8 +78,6 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessio
         )
     try:
         tokens = TokenUtils.create_token_pair({'user': sqlalchemy_to_pydantic_or_dict(UserOut, user, to_dict=True)})
-        pprint(tokens)
         return tokens
     except Exception as e:
         logger.error('Error while token pair generation', exc_info=e)
-
