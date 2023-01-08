@@ -5,10 +5,10 @@ import sqlalchemy
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from jose import ExpiredSignatureError
 from sqlalchemy.orm import Session
 
 from core.security import PasswordUtils, TokenUtils
-from core.utils.serialization import sqlalchemy_to_pydantic_or_dict
 from db.crud.users import create_new_user, get_user
 from db.database import get_db
 from db.models import User
@@ -30,7 +30,10 @@ def get_current_user_from_token(token: str = Depends(oauth2_scheme),
     )
     try:
         payload = TokenUtils.decode_token(token)
-        username = payload['user']['username']
+        username = payload['sub']
+    except ExpiredSignatureError:
+        logger.error(msg='Token expired')
+        raise HTTPException(status_code=403, detail='Token expired')
     except Exception as e:
         logger.error(msg='Error while getting user from token', exc_info=e)
         raise credentials_exception
@@ -78,7 +81,7 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessio
             detail="Incorrect username or password",
         )
     try:
-        tokens = TokenUtils.create_token_pair({'user': sqlalchemy_to_pydantic_or_dict(UserOut, user, to_dict=True)})
+        tokens = TokenUtils.create_token_pair({'sub': user.username})
         return tokens
     except Exception as e:
         logger.error('Error while token pair generation', exc_info=e)

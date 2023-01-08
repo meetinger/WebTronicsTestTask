@@ -8,14 +8,14 @@ from schemas.users import UserIn
 
 def create_new_user(user: UserIn, db: Session) -> sqlalchemy.orm.query.Query:
     """Создание пользователя"""
-    user = User(username=user.username,
+    user_db = User(username=user.username,
                 email=user.email,
                 hashed_password=PasswordUtils.hash_password(user.password),
                 )
-    db.add(user)
+    db.add(user_db)
     db.commit()
-    db.refresh(user)
-    return user
+    db.refresh(user_db)
+    return user_db
 
 
 def get_user(username: str, db: Session) -> sqlalchemy.orm.query.Query:

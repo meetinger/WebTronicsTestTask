@@ -33,10 +33,10 @@ class TokenUtils:
 
         data_to_encode = data.copy()
         expire_in = datetime.utcnow() + timedelta(
-            minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES if token_type == 'refresh'
+            minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES if token_type == 'refresh_token'
             else settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         data_to_encode['token_type'] = token_type
-        data_to_encode['expire_in'] = expire_in.timestamp()
+        data_to_encode['exp'] = expire_in
         encoded_jwt = jwt.encode(data_to_encode, key=settings.SECRET_KEY, algorithm=settings.ALGORITHM)
         return encoded_jwt
 

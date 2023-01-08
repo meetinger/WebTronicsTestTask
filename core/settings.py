@@ -1,6 +1,10 @@
 from core.logger_config import LOGGER_CONFIG as LOGGER_CFG
 
 class Settings:
+    #Root URL:
+    ROOT_URL = 'http://localhost:8000/'
+
+
     # DB Setup
     DB_USER: str = 'userDB'
     DB_PASSWORD = 'passwordDB'
@@ -17,6 +21,10 @@ class Settings:
 
     # Logger Configuration
     LOGGER_CONFIG = LOGGER_CFG
+
+    # Attachments Storage
+    POST_ATTACHMENTS_PATH = 'attachments/'
+
 
 
 settings = Settings()
