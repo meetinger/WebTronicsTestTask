@@ -15,3 +15,13 @@ class UserIn(UserBase):
 class UserOut(UserBase):
     """Схема пользователя которая уходит клиентам"""
     pass
+
+    class Config:
+        orm_mode = True
+
+
+class Token(BaseModel):
+    """Схема токена"""
+    access_token: str
+    refresh_token: str | None
+    token_type: str
