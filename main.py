@@ -1,13 +1,16 @@
+from logging.config import dictConfig
+import logging
+
 from fastapi import FastAPI
 
+from core.settings import settings
+from routes import auth
+
+dictConfig(settings.LOGGER_CONFIG)
+
 app = FastAPI()
+app.include_router(auth.router)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+if __name__ == '__main__':
+    pass

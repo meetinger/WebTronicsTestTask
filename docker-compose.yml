@@ -4,7 +4,7 @@ services:
     container_name: wb_postgres_container
     image: postgres:15.1
     environment:
-      POSTGRES_DB: djangoLearning
+      POSTGRES_DB: wbTestTask
       POSTGRES_USER: userDB
       POSTGRES_PASSWORD: passwordDB
       PGDATA: "pgdata"
