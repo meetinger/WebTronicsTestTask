@@ -1,4 +1,5 @@
 import logging
+from pprint import pprint
 
 import sqlalchemy
 from fastapi import APIRouter, HTTPException
@@ -17,7 +18,7 @@ router = APIRouter(prefix="/auth", tags=['auth'])
 
 logger = logging.getLogger(__name__)
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/get_token")
 
 
 def get_current_user_from_token(token: str = Depends(oauth2_scheme),
@@ -29,7 +30,7 @@ def get_current_user_from_token(token: str = Depends(oauth2_scheme),
     )
     try:
         payload = TokenUtils.decode_token(token)
-        username = payload['username']
+        username = payload['user']['username']
     except Exception as e:
         logger.error(msg='Error while getting user from token', exc_info=e)
         raise credentials_exception
@@ -81,3 +82,9 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessio
         return tokens
     except Exception as e:
         logger.error('Error while token pair generation', exc_info=e)
+
+
+@router.post('/get_user_info', response_model=UserOut)
+async def get_user_info(db: Session = Depends(get_db), current_user: User = Depends(get_current_user_from_token)):
+    """Получение информации о пользователе"""
+    return current_user

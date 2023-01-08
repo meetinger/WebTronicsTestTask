@@ -14,7 +14,7 @@ class UserIn(UserBase):
 
 class UserOut(UserBase):
     """Схема пользователя которая уходит клиентам"""
-    pass
+    id: int
 
     class Config:
         orm_mode = True
