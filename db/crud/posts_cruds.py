@@ -4,7 +4,7 @@ import core.utils.attachments as attachment_utils
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
-from db.crud.attachments import create_attachments, delete_attachments
+from db.crud.attachments_cruds import create_attachments, delete_attachments
 from db.models import Post, User, Attachment
 
 

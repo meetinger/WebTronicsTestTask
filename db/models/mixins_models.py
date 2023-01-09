@@ -1,11 +1,11 @@
-# import db.models.reactions as reactions_models
-
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import declared_attr, declarative_mixin, relationship
 
-from db.models.reactions import Reaction
+# from db.models import Reaction
 
-REACTION_CLASS = Reaction
+import db.models.reactions_models as reaction_models
+
+REACTION_CLASS = reaction_models.Reaction
 
 @declarative_mixin
 class ReactionsFKMixin:

@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
 from db.models import User
-from db.models.reactions import Reaction
-from schemas.reactions import ReactionIn, ReactionTypes, ReactionEntities
+from db.models import Reaction
+from schemas.reactions_schemas import ReactionIn, ReactionTypes, ReactionEntities
 
 
 def create_reaction(reaction: ReactionIn, db: Session, current_user: User):

@@ -8,10 +8,10 @@ from jose import ExpiredSignatureError
 from sqlalchemy.orm import Session
 
 from core.security import PasswordUtils, TokenUtils
-from db.crud.users import create_new_user, get_user
+from db.crud.users_crud import create_new_user, get_user
 from db.database import get_db
 from db.models import User
-from schemas.users import UserOut, UserIn, Token
+from schemas.users_schemas import UserOut, UserIn, Token
 
 router = APIRouter(prefix="/auth", tags=['auth'])
 

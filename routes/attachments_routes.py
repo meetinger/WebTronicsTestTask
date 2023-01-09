@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
-from db.crud.attachments import get_attachment_by_filename
+from db.crud.attachments_cruds import get_attachment_by_filename
 from db.database import get_db
 
 router = APIRouter(prefix="/attachments", tags=['auxiliary'])

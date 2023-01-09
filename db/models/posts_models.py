@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ARRAY, ForeignKey
 from sqlalchemy.orm import relationship
 
 from db.database import Base
-from db.models.mixins import ReactionsFKMixin
+from db.models.mixins_models import ReactionsFKMixin
 
 
 class Post(Base, ReactionsFKMixin):

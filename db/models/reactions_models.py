@@ -1,10 +1,8 @@
-import enum
-
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum
 from sqlalchemy.orm import relationship
 
 from db.database import Base
-from schemas.reactions import ReactionTypes
+from schemas.reactions_schemas import ReactionTypes
 
 class Reaction(Base):
     """Класс реакции"""

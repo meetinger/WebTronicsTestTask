@@ -2,8 +2,8 @@ import sqlalchemy
 from sqlalchemy.orm import Session
 
 from core.security import PasswordUtils
-from db.models.users import User
-from schemas.users import UserIn
+from db.models import User
+from schemas.users_schemas import UserIn
 
 
 def create_new_user(user: UserIn, db: Session) -> User:
