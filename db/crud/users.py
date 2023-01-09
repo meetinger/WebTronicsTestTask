@@ -6,7 +6,7 @@ from db.models.users import User
 from schemas.users import UserIn
 
 
-def create_new_user(user: UserIn, db: Session) -> sqlalchemy.orm.query.Query:
+def create_new_user(user: UserIn, db: Session) -> User:
     """Создание пользователя"""
     user_db = User(username=user.username,
                 email=user.email,
@@ -18,6 +18,6 @@ def create_new_user(user: UserIn, db: Session) -> sqlalchemy.orm.query.Query:
     return user_db
 
 
-def get_user(username: str, db: Session) -> sqlalchemy.orm.query.Query:
+def get_user(username: str, db: Session) -> User:
     """Получить пользователя по юзернейму"""
     return db.query(User).filter_by(username=username).first()

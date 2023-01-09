@@ -18,3 +18,4 @@ class PostOut(PostBase):
     attachments_urls: list[str] | None
     class Config:
         orm_mode = True
+

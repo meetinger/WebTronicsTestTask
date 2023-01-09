@@ -8,6 +8,7 @@ class Attachment(Base):
     __tablename__ = 'attachments'
 
     id = Column(Integer, primary_key=True, index=True)
+    original_filename = Column(String, index=True)
     filename = Column(String, unique=True, index=True)
     post_id = Column(Integer, ForeignKey('posts.id'), index=True)
 
