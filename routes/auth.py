@@ -1,5 +1,4 @@
 import logging
-from pprint import pprint
 
 import sqlalchemy
 from fastapi import APIRouter, HTTPException
@@ -85,9 +84,3 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessio
         return tokens
     except Exception as e:
         logger.error('Error while token pair generation', exc_info=e)
-
-
-@router.post('/get_user_info', response_model=UserOut)
-async def get_user_info(db: Session = Depends(get_db), current_user: User = Depends(get_current_user_from_token)):
-    """Получение информации о пользователе"""
-    return current_user

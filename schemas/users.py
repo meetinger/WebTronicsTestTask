@@ -2,22 +2,31 @@ from pydantic import EmailStr, BaseModel
 
 
 class UserBase(BaseModel):
-    """Базовая схема пользователя"""
     username: str
+    name: str
+
+
+class UserFull(UserBase):
+    """Полная схема пользователя"""
+    id: int
     email: EmailStr
 
 
 class UserIn(UserBase):
     """Схема пользователя которая приходит от клиентов"""
+    email: EmailStr
     password: str
 
 
-class UserOut(UserBase):
+class UserOut(UserFull):
     """Схема пользователя которая уходит клиентам"""
-    id: int
 
     class Config:
         orm_mode = True
+
+class UserLimited(UserBase):
+    """Схема пользователя скрывающая email"""
+    id: int
 
 
 class Token(BaseModel):

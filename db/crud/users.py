@@ -9,9 +9,10 @@ from schemas.users import UserIn
 def create_new_user(user: UserIn, db: Session) -> User:
     """Создание пользователя"""
     user_db = User(username=user.username,
-                email=user.email,
-                hashed_password=PasswordUtils.hash_password(user.password),
-                )
+                   name=user.name,
+                   email=user.email,
+                   hashed_password=PasswordUtils.hash_password(user.password),
+                  )
     db.add(user_db)
     db.commit()
     db.refresh(user_db)
