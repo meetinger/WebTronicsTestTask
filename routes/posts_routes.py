@@ -1,17 +1,14 @@
 import logging
-from pprint import pprint
-from urllib.parse import urljoin
 
 from fastapi import APIRouter, Depends, UploadFile, Form, HTTPException
 from sqlalchemy.orm import Session
 
-from core.settings import settings
 from core.utils.attachments import get_view_url
-from db.crud.posts import create_new_post, get_post, update_post
+from db.crud.posts_cruds import create_new_post, get_post, update_post
 from db.database import get_db
 from db.models import User, Post
-from routes.auth import get_current_user_from_token
-from schemas.posts import PostIn, PostOut
+from routes.auth_routes import get_current_user_from_token
+from schemas.posts_schemas import PostOut
 
 router = APIRouter(prefix="/posts", tags=['posts'])
 

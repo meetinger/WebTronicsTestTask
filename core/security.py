@@ -1,8 +1,8 @@
 import logging
 from datetime import timedelta, datetime
-from typing import Optional, Literal
+from typing import Literal
 
-from jose import jwt, JWTError
+from jose import jwt
 from passlib.context import CryptContext
 
 from core.settings import settings

@@ -2,12 +2,10 @@ import enum
 
 from pydantic import BaseModel
 
-from db.models import Post
+from db.models.mixins_models import get_reactions_entities_types
 
 
-class ReactionEntities(enum.Enum):
-    """Доступные сущности для реакций"""
-    post = Post
+ReactionEntities = get_reactions_entities_types()
 
 class ReactionTypes(enum.Enum):
     """Типы реакций"""

@@ -4,10 +4,9 @@ from sqlalchemy.orm import Session
 from core.utils.serialization import sqlalchemy_to_pydantic_or_dict
 from db.database import get_db
 from db.models import User, Post
-from routes.auth import get_current_user_from_token
-from schemas.posts import PostOut
-from schemas.users import UserOut, UserLimited
-
+from routes.auth_routes import get_current_user_from_token
+from schemas.posts_schemas import PostOut
+from schemas.users_schemas import UserOut, UserLimited
 
 router = APIRouter(prefix="/users", tags=['users'])
 
