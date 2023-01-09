@@ -12,6 +12,6 @@ class Post(Base, ReactionsFKMixin):
     text = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'), index=True)
 
-    user = relationship('User', back_populates='posts')
+    user = relationship('User', back_populates='user_posts')
     attachments = relationship('Attachment', back_populates='post')
 
