@@ -16,7 +16,7 @@ class Settings:
     # JWT Settings
     SECRET_KEY = 'ed546f271d436aeed02cb1b6e7ba496eba424e48d56bf6398e320c7100a280aa'
     ALGORITHM = 'HS256'
-    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES = 300
     REFRESH_TOKEN_EXPIRE_MINUTES = 60*24*30
 
     # Logger Configuration

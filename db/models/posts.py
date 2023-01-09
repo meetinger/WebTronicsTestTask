@@ -2,9 +2,10 @@ from sqlalchemy import Column, Integer, String, ARRAY, ForeignKey
 from sqlalchemy.orm import relationship
 
 from db.database import Base
+from db.models.mixins import ReactionsFKMixin
 
 
-class Post(Base):
+class Post(Base, ReactionsFKMixin):
     __tablename__ = 'posts'
 
     id = Column(Integer, primary_key=True, index=True)
@@ -12,5 +13,5 @@ class Post(Base):
     user_id = Column(Integer, ForeignKey('users.id'), index=True)
 
     user = relationship('User', back_populates='posts')
-
     attachments = relationship('Attachment', back_populates='post')
+
