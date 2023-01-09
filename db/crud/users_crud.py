@@ -1,8 +1,7 @@
-import sqlalchemy
 from sqlalchemy.orm import Session
 
 from core.security import PasswordUtils
-from db.models import User
+from db.models.users_models import User
 from schemas.users_schemas import UserIn
 
 

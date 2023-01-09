@@ -1,11 +1,8 @@
-import sqlalchemy
-import core.utils.attachments as attachment_utils
-
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
 from db.crud.attachments_cruds import create_attachments, delete_attachments
-from db.models import Post, User, Attachment
+from db.models import Post, User
 
 
 def create_new_post(text: str, attachments: list[UploadFile], current_user: User,

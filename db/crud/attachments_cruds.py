@@ -1,9 +1,7 @@
-import sqlalchemy
-import core.utils.attachments as attachment_utils
-
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
+import core.utils.attachments as attachment_utils
 from db.models import Attachment
 
 

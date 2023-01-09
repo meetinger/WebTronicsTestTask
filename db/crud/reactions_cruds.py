@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from db.models import User
 from db.models import Reaction
+from db.models import User
 from schemas.reactions_schemas import ReactionIn, ReactionTypes, ReactionEntities
 
 

@@ -1,14 +1,12 @@
 import logging
+import mimetypes
 import os
 import random
 import string
-import mimetypes
 from typing import IO
 from urllib.parse import urljoin
 
 from core.settings import settings
-from db.crud.attachments_cruds import get_attachment_by_filename
-from db.models import Post
 
 logger = logging.getLogger(__name__)
 

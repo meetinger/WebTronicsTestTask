@@ -8,7 +8,6 @@ from routes.auth_routes import get_current_user_from_token
 from schemas.posts_schemas import PostOut
 from schemas.users_schemas import UserOut, UserLimited
 
-
 router = APIRouter(prefix="/users", tags=['users'])
 
 
