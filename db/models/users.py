@@ -13,5 +13,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
 
+    posts = relationship('Post', back_populates='user')
 # class Token(Base):
 #     """Класс токена"""

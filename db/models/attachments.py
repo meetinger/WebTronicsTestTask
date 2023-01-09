@@ -11,4 +11,4 @@ class Attachment(Base):
     filename = Column(String, unique=True, index=True)
     post_id = Column(Integer, ForeignKey('posts.id'), index=True)
 
-    post = relationship('Post', backref='post_attachments')
+    post = relationship('Post', back_populates='attachments')

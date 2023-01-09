@@ -1,8 +1,9 @@
 import sqlalchemy
-from fastapi import UploadFile
-from sqlalchemy.orm import Session
+import core.utils.attachments as attachment_utils
 
-from core.utils.attachments import gen_filename, save_file
+from fastapi import UploadFile, Depends
+from sqlalchemy.orm import Session
+from db.database import get_db
 from db.models import Post, User, Attachment
 from schemas.posts import PostIn
 
@@ -14,10 +15,10 @@ def create_new_post(text: str, attachments: list[UploadFile], current_user: User
     def _create_attachment_obj(upload_file: UploadFile) -> Attachment:
         """Внутренняя функция создания объекта вложения"""
 
-        filename = gen_filename(upload_file.content_type)
+        filename = attachment_utils.gen_filename(upload_file.content_type)
         while db.query(Attachment.id).filter_by(filename=filename).first() is not None:
-            filename = gen_filename(upload_file.content_type)
-        save_file(filename=filename, file_bytes=upload_file.file.read())
+            filename = attachment_utils.gen_filename(upload_file.content_type)
+        attachment_utils.save_file(filename=filename, file_bytes=upload_file.file.read())
 
         return Attachment(filename=filename)
 
@@ -27,3 +28,8 @@ def create_new_post(text: str, attachments: list[UploadFile], current_user: User
     db.add(post_db)
     db.commit()
     return post_db
+
+
+def get_attachment(filename: str, db: Session) -> sqlalchemy.orm.query.Query:
+    """Получить вложение"""
+    return db.query(Attachment).filter_by(filename=filename).first()

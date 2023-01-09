@@ -11,6 +11,6 @@ class Post(Base):
     text = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'), index=True)
 
-    user = relationship('User', backref='user_posts')
+    user = relationship('User', back_populates='posts')
 
-    attachments = relationship('Attachment', backref='attachment_posts')
+    attachments = relationship('Attachment', back_populates='post')
