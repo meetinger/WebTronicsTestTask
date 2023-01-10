@@ -1,7 +1,7 @@
 import enum
 from typing import Type
 
-from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy import Column, ForeignKey, Integer, UniqueConstraint
 from sqlalchemy.orm import relationship, declarative_mixin, declared_attr
 
 from db.models.reactions_models import Reaction
@@ -16,10 +16,12 @@ class ReactionsFKMixin:
     def reactions(cls):
         entity_name = cls.__name__.lower()
 
-        ref_id = Column(Integer, ForeignKey(f'{cls.__tablename__}.id'), index=True)
-        ref = relationship(cls.__name__, back_populates='reactions')
-        setattr(REACTION_CLASS, f'{entity_name}_id', ref_id)
-        setattr(REACTION_CLASS, entity_name, ref)
+        col_entity_ref_id_name = f'{cls.__tablename__}.id'
+        col_entity_ref_id = Column(Integer, ForeignKey(col_entity_ref_id_name), index=True)
+        col_entity_ref = relationship(cls.__name__, back_populates='reactions')
+
+        setattr(REACTION_CLASS, f'{entity_name}_id', col_entity_ref_id)
+        setattr(REACTION_CLASS, entity_name, col_entity_ref)
 
         return relationship('Reaction', back_populates=entity_name)
 

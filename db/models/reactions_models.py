@@ -7,6 +7,7 @@ class Reaction(Base):
     """Класс реакции"""
     __tablename__ = 'reactions'
 
+
     id = Column(Integer, primary_key=True, index=True)
     type = Column(Integer, index=True)
 

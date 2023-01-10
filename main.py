@@ -1,5 +1,6 @@
 from logging.config import dictConfig
 
+import uvicorn
 from fastapi import FastAPI
 
 from core.settings import settings
@@ -15,5 +16,5 @@ app.include_router(users_routes.router)
 app.include_router(reactions_routes.router)
 
 
-if __name__ == '__main__':
-    pass
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

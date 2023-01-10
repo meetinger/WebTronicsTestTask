@@ -7,6 +7,7 @@ from typing import IO
 from urllib.parse import urljoin
 
 from core.settings import settings
+from core.utils.paths import get_api_path
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ def delete_file(filename: str) -> bool:
 
 def get_view_url(filename: str) -> str:
     """Создание ссылки для просмотра картинки"""
-    url = urljoin(settings.ROOT_URL, '/attachments/view/'+filename)
+    url = urljoin(get_api_path('view_attachment'), filename)
     return url
 
 def get_attachment_file(filename: str) -> IO:
