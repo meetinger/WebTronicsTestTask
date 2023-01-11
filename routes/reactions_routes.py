@@ -28,6 +28,9 @@ async def set_reaction(reaction: ReactionIn, db: Session = Depends(get_db),
     if entity_db is None:
         raise HTTPException(status_code=404, detail='Entity not found!')
 
+    if entity_db.user_id == current_user.id:
+        raise HTTPException(status_code=409, detail='You can not put a reaction on your post!')
+
     entity_id_column = get_reaction_entity_id_column(clsname=reaction.entity_type)
 
     reaction_data = ReactionData(entity_id_column=entity_id_column, entity=entity_db,
