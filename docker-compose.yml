@@ -17,6 +17,23 @@ services:
     networks:
       - postgres
 
+  postgres_test_db:
+    container_name: wb_postgres_test_container
+    image: postgres:15.1
+    environment:
+      POSTGRES_DB: wbTestTask_Test
+      POSTGRES_USER: userDB_Test
+      POSTGRES_PASSWORD: passwordDB_Test
+      PGDATA: "pgdata_test"
+    volumes:
+      - ./postgres:/postgres
+    ports:
+      - "5433:5433"
+    expose:
+      - "5433"
+    networks:
+      - postgres
+
   pgadmin:
     container_name: wb_pgadmin_container
     image: dpage/pgadmin4:6.17

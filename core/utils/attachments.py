@@ -3,13 +3,19 @@ import mimetypes
 import os
 import random
 import string
-from typing import IO
+from typing import IO, Generator
 from urllib.parse import urljoin
+
+from fastapi import Depends
 
 from core.settings import settings
 from core.utils.paths import get_api_path
 
 logger = logging.getLogger(__name__)
+
+def get_attachment_path() -> str:
+    """Зависимость для пути хранения вложений"""
+    return settings.POST_ATTACHMENTS_PATH
 
 def gen_filename(content_type: str) -> str:
     """Сгенерировать имя файла"""
@@ -24,9 +30,9 @@ def gen_filename(content_type: str) -> str:
         raise TypeError('Unsupported file mimetype')
 
 
-def get_file_path(filename: str) -> str:
+def get_file_path(filename: str, post_attachments_path: str = Depends(get_attachment_path)) -> str:
     """Создание пути файла"""
-    return os.path.join(settings.POST_ATTACHMENTS_PATH, filename)
+    return os.path.join(post_attachments_path, filename)
 
 def save_file(filename: str, file_bytes: bytes) -> bool:
     """Сохранить файл"""
