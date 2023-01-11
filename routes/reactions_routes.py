@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 @router.post('/set', response_model=ReactionOut)
 async def set_reaction(reaction: ReactionIn, db: Session = Depends(get_db),
                        current_user: User = Depends(get_current_user_from_token)):
+    """Эндпоинт для установки реакций"""
     if not verify_input_reaction(reaction):
         raise HTTPException(status_code=400, detail='Invalid reaction parameters!')
 

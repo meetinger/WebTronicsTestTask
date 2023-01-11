@@ -25,7 +25,6 @@ class ReactionsFKMixin:
 
         return relationship('Reaction', back_populates=entity_name)
 
-def get_reactions_entities_types() -> Type[enum.Enum]:
-    """Функция получения enum сущностей, поддерживающих реакцию"""
-    enum_cls = enum.Enum('ReactionEntities', {subcls.__name__.lower(): subcls for subcls in ReactionsFKMixin.__subclasses__()})
-    return enum_cls
+def get_reactions_entities_types() -> dict:
+    """Функция получения dict сущностей, поддерживающих реакцию"""
+    return {subcls.__name__.lower(): subcls for subcls in ReactionsFKMixin.__subclasses__()}

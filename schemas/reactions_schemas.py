@@ -9,7 +9,7 @@ from db.models import Reaction
 from db.models.mixins_models import get_reactions_entities_types
 
 # enum с сущностями, поддерживающими реакции
-ReactionEntities = get_reactions_entities_types()
+ReactionEntities = enum.Enum('ReactionEntities', get_reactions_entities_types())
 
 
 class ReactionTypes(enum.Enum):
@@ -39,9 +39,6 @@ class ReactionOut(BaseModel):
     reaction_type: str
     entity_id: int
     entity_type: str
-
-    # class Config:
-    #     orm_mode = True
 
 
 def verify_input_reaction(reaction: ReactionIn) -> bool:

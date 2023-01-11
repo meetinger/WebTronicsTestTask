@@ -1,8 +1,11 @@
 from sqlalchemy.orm import Session
 
+from db.database import Base
 from db.models import Reaction
 from db.models import User
-from schemas.reactions_schemas import ReactionIn, ReactionTypes, ReactionEntities, ReactionData
+from db.models.mixins_models import get_reactions_entities_types
+from schemas.reactions_schemas import ReactionIn, ReactionTypes, ReactionEntities, ReactionData, \
+    get_reaction_entity_id_column
 
 
 def create_reaction(reaction_data: ReactionData, db: Session, current_user: User) -> Reaction:
@@ -36,3 +39,19 @@ def delete_reaction(reaction_id: int, reaction_data, db: Session, current_user: 
     db.delete(reaction_db)
     db.commit()
     return True
+
+
+def get_reactions_count_for_entity(entity_db: Base, db: Session):
+    entity_cls = entity_db.__class__
+    entity_clsname = entity_cls.__name__.lower()
+    reaction_entity_id_column = get_reaction_entity_id_column(entity_clsname)
+
+    reaction_types_dict = {i.name: i.value for i in ReactionTypes if i.name != 'unset'}
+
+    reactions_count_dict = {key:
+                                db.query(Reaction.id).filter_by(
+                                    **{reaction_entity_id_column.name: value}).count()
+                            for key, value in reaction_types_dict.items()}
+
+
+    return reactions_count_dict

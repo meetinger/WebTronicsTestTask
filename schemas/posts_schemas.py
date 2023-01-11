@@ -15,6 +15,7 @@ class PostOut(PostBase):
     """Схема поста которая уходит клиентам"""
     id: int
     attachments_urls: list[str] | None
+    reactions_count: dict
 
     class Config:
         orm_mode = True
