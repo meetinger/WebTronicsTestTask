@@ -16,6 +16,7 @@ def create_reaction(reaction_data: ReactionData, db: Session, current_user: User
     reaction_db = Reaction(**reaction_kwargs)
     db.add(reaction_db)
     db.commit()
+    db.refresh(reaction_db)
     return reaction_db
 
 def update_reaction(reaction_id: int, reaction_data: ReactionData, db: Session, current_user: User) -> Reaction:
@@ -27,6 +28,7 @@ def update_reaction(reaction_id: int, reaction_data: ReactionData, db: Session, 
     reaction_db.type = reaction_data.reaction_type
     db.add(reaction_db)
     db.commit()
+    db.refresh(reaction_db)
     return reaction_db
 
 

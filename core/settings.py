@@ -15,7 +15,7 @@ class Settings:
     # DB Test Setup
     DB_TEST_USER: str = 'userDB_Test'
     DB_TEST_PASSWORD = 'passwordDB_Test'
-    DB_TEST_SERVER: str = 'localhost_Test'
+    DB_TEST_SERVER: str = 'localhost'
     DB_TEST_PORT: str = '5433'
     DB_TEST_NAME: str = 'wbTestTask_Test'
     DATABASE_TEST_URL = f"postgresql://{DB_TEST_USER}:{DB_TEST_PASSWORD}@{DB_TEST_SERVER}:{DB_TEST_PORT}/{DB_TEST_NAME}"
@@ -31,9 +31,9 @@ class Settings:
     LOGGER_CONFIG = LOGGER_CFG
 
     # Attachments Storage
-    POST_ATTACHMENTS_PATH = 'attachments/'
+    POST_ATTACHMENTS_PATH = 'storage/attachments/'
 
     # Attachments Test Storage
-    POST_TEST_ATTACHMENTS_PATH = 'attachments_test/'
+    POST_TEST_ATTACHMENTS_PATH = 'storage/attachments_test/'
 
 settings = Settings()

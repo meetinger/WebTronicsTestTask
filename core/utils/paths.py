@@ -4,9 +4,12 @@ from core.settings import settings
 
 # словарь с путями
 API_PATHS_DICT = {
+    'user_register': '/auth/register',
     'view_attachment': '/attachments/view/',
     'view_post': '/posts/view'
 }
-def get_api_path(path_name: str) -> str:
+def get_api_path(path_name: str, append_root_url=True) -> str:
     """Получить ссылку на API метод"""
-    return urljoin(settings.ROOT_URL, API_PATHS_DICT[path_name])
+    if append_root_url:
+        return urljoin(settings.ROOT_URL, API_PATHS_DICT[path_name])
+    return API_PATHS_DICT[path_name]

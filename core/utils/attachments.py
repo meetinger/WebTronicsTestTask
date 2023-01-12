@@ -9,6 +9,7 @@ from urllib.parse import urljoin
 from fastapi import Depends
 
 from core.settings import settings
+from core.utils.misc import gen_random_str
 from core.utils.paths import get_api_path
 
 logger = logging.getLogger(__name__)
@@ -21,13 +22,13 @@ def gen_filename(content_type: str) -> str:
     """Сгенерировать имя файла"""
     mimetypes_ins = mimetypes.MimeTypes()
     mime_ext_dict = mimetypes_ins.types_map_inv[0] | mimetypes_ins.types_map_inv[1]
-    file_extension = mime_ext_dict[content_type][0]
     try:
-        random_str = ''.join(random.choices(string.ascii_letters+string.digits, k=30))
+        file_extension = mime_ext_dict[content_type][0]
+        random_str = gen_random_str(str_len=30)
         return random_str + file_extension
     except KeyError:
         logger.error(msg=f'Unsupported file mimetype: {content_type}')
-        raise TypeError('Unsupported file mimetype')
+        raise TypeError(f'Unsupported file mimetype: {content_type}')
 
 
 def get_file_path(filename: str, post_attachments_path: str = Depends(get_attachment_path)) -> str:

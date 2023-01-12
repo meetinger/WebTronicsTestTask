@@ -21,6 +21,7 @@ def create_attachments(upload_files: [UploadFile], db: Session, save_to_db=True)
     if save_to_db:
         db.bulk_save_objects(attachments_db)
         db.commit()
+        db.refresh(attachments_db)
 
     return attachments_db
 

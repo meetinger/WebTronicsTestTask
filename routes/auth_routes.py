@@ -63,11 +63,7 @@ async def register(user: UserIn, db: Session = Depends(get_db)):
         e = HTTPException(status_code=409, detail='This username already exist!')
         logger.debug(msg='This username already exist!', exc_info=e)
         raise e
-    try:
-        return create_new_user(user=user, db=db)
-    except Exception as e:
-        logger.error(msg='Error Insert in to DB', exc_info=e)
-        raise HTTPException(status_code=500, detail=f'Internal Server Error: {e}', )
+    return create_new_user(user=user, db=db)
 
 
 @router.post('/get_token', response_model=Token)

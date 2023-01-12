@@ -14,6 +14,7 @@ def create_new_post(text: str, attachments: list[UploadFile], current_user: User
     post_db.attachments.extend(attachments_db)
     db.add(post_db)
     db.commit()
+    db.refresh(post_db)
     return post_db
 
 def get_post(post_id: int, db: Session) -> Post:
@@ -35,5 +36,6 @@ def update_post(post_id: int, text: str, attachments: list[UploadFile], db: Sess
     delete_attachments(attachment_ids=[i.id for i in post_db.attachments], db=db, save_to_db=False)
     post_db.attachments = create_attachments(upload_files=attachments, db=db, save_to_db=False)
     db.commit()
+    db.refresh(post_db)
     return post_db
 
