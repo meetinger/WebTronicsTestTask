@@ -4,4 +4,5 @@ venv3.10/
 logs.log
 *.pyc
 storage/attachments/*
+storage/attachments_test/*
 .coverage

@@ -1,22 +1,32 @@
+import os
 import pytest
+
+import core.utils.attachments
+
+from io import BytesIO
+from pprint import pprint
+from unittest.mock import patch
+
 
 from typing import Generator, Any
 
+from PIL import Image
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from core.security import TokenUtils
 from core.settings import settings
-from core.utils.attachments import get_attachment_path
+from core.utils.misc import gen_random_str
 from db.crud.posts_cruds import create_new_post
 from db.crud.reactions_cruds import create_reaction
 from db.crud.users_crud import create_new_user
 from db.database import Base, get_db
-from db.models import User, Post
+from db.models import User
 from routes import auth_routes, posts_routes, attachments_routes, users_routes, reactions_routes
 from schemas.reactions_schemas import ReactionData, get_reaction_entity_id_column, ReactionTypes
-from tests.dataset.db_test_dataset import DATASET
+from schemas.users_schemas import UserIn
 
 
 def start_app() -> FastAPI:
@@ -59,23 +69,19 @@ def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
 
 
 @pytest.fixture(scope="function")
-def client(
-        app: FastAPI, db_session: SessionTesting
+def client(monkeypatch, app: FastAPI, db_session: SessionTesting
 ) -> Generator[TestClient, Any, None]:
     """Клиент для тестирования"""
-
     def _get_test_db():
         try:
             yield db_session
         finally:
             pass
 
-    def _get_attachment_path():
-        return settings.POST_TEST_ATTACHMENTS_PATH
-
     # перегрузка зависимостей
     app.dependency_overrides[get_db] = _get_test_db
-    app.dependency_overrides[get_attachment_path] = _get_attachment_path
+    monkeypatch.setattr(core.utils.attachments, 'get_attachment_path', lambda: settings.POST_TEST_ATTACHMENTS_PATH)
+
     with TestClient(app) as client:
         yield client
 
@@ -88,6 +94,16 @@ def user_admin(db_session):
 @pytest.fixture(scope="function")
 def user_common(db_session):
     return create_new_user(user=DATASET['users']['user'], db=db_session)
+
+
+@pytest.fixture(scope="function")
+def user_admin_token(user_admin: User):
+    return TokenUtils.create_token_pair({'sub': user_admin.username})
+
+
+@pytest.fixture(scope="function")
+def user_common_token(user_common: User):
+    return TokenUtils.create_token_pair({'sub': user_common.username})
 
 
 @pytest.fixture(scope="function")
@@ -108,3 +124,28 @@ def reaction(db_session, user: User, entity: Base, reaction_type: str):
                                  entity=entity,
                                  reaction_type=ReactionTypes[reaction_type].value, reaction_db=None)
     return create_reaction(reaction_data=reaction_data, db=db_session, current_user=user)
+
+
+IMG_COLORS = ('red', 'green', 'blue')
+
+def gen_images():
+    """Генерация изображений для тестов"""
+    images = []
+    for color in IMG_COLORS:
+        io = BytesIO()
+        img = Image.new(mode='RGB', size=(200, 200), color=color)
+        img.save(io, format='PNG')
+        images.append(('attachments', (f'{color}.png', io, 'image/png')))
+    return images
+
+
+# тестовые данные для тестов
+DATASET = {
+    'users': {'admin': UserIn(username='Admin', name='Одмен', email='admin@mail.ru', password='admin_password'),
+              'user': UserIn(username='User', name='Юзверь', email='user@mail.ru', password='user_password')},
+    'posts': {
+        'with_attachments': {'text': 'Post with attachments',
+                             'attachments': gen_images()},
+        'post_without_attachments': {'text': 'Post without attachments', 'attachments': []}
+    }
+}

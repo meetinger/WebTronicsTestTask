@@ -15,7 +15,7 @@ from core.utils.paths import get_api_path
 logger = logging.getLogger(__name__)
 
 def get_attachment_path() -> str:
-    """Зависимость для пути хранения вложений"""
+    """Путь хранения вложений"""
     return settings.POST_ATTACHMENTS_PATH
 
 def gen_filename(content_type: str) -> str:
@@ -31,9 +31,9 @@ def gen_filename(content_type: str) -> str:
         raise TypeError(f'Unsupported file mimetype: {content_type}')
 
 
-def get_file_path(filename: str, post_attachments_path: str = Depends(get_attachment_path)) -> str:
+def get_file_path(filename: str) -> str:
     """Создание пути файла"""
-    return os.path.join(post_attachments_path, filename)
+    return os.path.join(get_attachment_path(), filename)
 
 def save_file(filename: str, file_bytes: bytes) -> bool:
     """Сохранить файл"""

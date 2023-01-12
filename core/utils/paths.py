@@ -6,6 +6,7 @@ from core.settings import settings
 API_PATHS_DICT = {
     'user_register': '/auth/register',
     'get_token': '/auth/get_token',
+    'create_post': '/posts/create',
     'view_attachment': '/attachments/view/',
     'view_post': '/posts/view'
 }

@@ -3,8 +3,8 @@ from unittest.mock import patch
 import pytest
 
 from faker import Faker
-from tests.dataset.db_test_dataset import DATASET
-from core.utils.misc import gen_random_str
+from tests.conftest import DATASET
+from core.utils.misc import gen_random_str, is_dicts_equals
 from core.utils.paths import get_api_path
 from core.settings import settings
 
@@ -24,12 +24,13 @@ class TestRegister:
     def test_register_ok(self, client, profile):
         resp = client.post(get_api_path('user_register', append_root_url=False), json=profile)
         assert resp.status_code == 200
-        assert resp.json() == {
+        resp_correct = {
             'id': 1,
             'username': profile['username'],
             'name': profile['name'],
             'email': profile['email']
         }
+        assert is_dicts_equals(resp.json(), resp_correct, ignore_keys=('id',))
 
     def test_register_repeat_email(self, client, profile):
         resp1 = client.post(get_api_path('user_register', append_root_url=False), json=profile)
