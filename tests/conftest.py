@@ -36,7 +36,7 @@ engine = create_engine(settings.DATABASE_TEST_URL)
 SessionTesting = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def app() -> Generator[FastAPI, Any, None]:
     """Создаём новую БД для каждого теста"""
     Base.metadata.create_all(engine)
@@ -45,7 +45,7 @@ def app() -> Generator[FastAPI, Any, None]:
     Base.metadata.drop_all(engine)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     """Использование сессии в тестах"""
     connection = engine.connect()
@@ -58,7 +58,7 @@ def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     connection.close()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def client(
         app: FastAPI, db_session: SessionTesting
 ) -> Generator[TestClient, Any, None]:
@@ -80,29 +80,29 @@ def client(
         yield client
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def user_admin(db_session):
     return create_new_user(user=DATASET['users']['admin'], db=db_session)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def user_common(db_session):
     return create_new_user(user=DATASET['users']['user'], db=db_session)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def post_with_attachments(db_session, user: User):
     post = DATASET['posts']['post_with_attachments']
     return create_new_post(text=post['text'], attachments=post['attachments'], current_user=user, db=db_session)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def post_without_attachments(db_session, user: User):
     post = DATASET['posts']['post_without_attachments']
     return create_new_post(text=post['text'], attachments=post['attachments'], current_user=user, db=db_session)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def reaction(db_session, user: User, entity: Base, reaction_type: str):
     reaction_data = ReactionData(entity_id_column=get_reaction_entity_id_column(clsname=entity.__class__.__name__),
                                  entity=entity,

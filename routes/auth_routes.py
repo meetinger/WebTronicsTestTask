@@ -80,3 +80,4 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessio
         return tokens
     except Exception as e:
         logger.error('Error while token pair generation', exc_info=e)
+        raise HTTPException(status_code=500, detail='Error while token pair generation')
