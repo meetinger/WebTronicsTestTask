@@ -1,2 +1,8 @@
 venv/
+venv3.10/
 .idea/
+logs.log
+*.pyc
+storage/attachments/*
+storage/attachments_test/*
+.coverage
