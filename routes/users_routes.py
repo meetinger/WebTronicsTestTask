@@ -33,7 +33,7 @@ async def info_user_by_id(user_id: int, db: Session = Depends(get_db),
 async def user_posts(user_id: int, db: Session = Depends(get_db),
                      current_user: User = Depends(get_current_user_from_token)):
     posts_db = db.query(Post).filter_by(user_id=user_id).all()
-    posts_out = [PostOut(id=post_db.id, text=post_db.text,
+    posts_out = [PostOut(id=post_db.id, text=post_db.text, reactions_count=None,
                          attachments_urls=[get_view_url(attachment.filename) for attachment in post_db.attachments]) for
                  post_db in posts_db]
     return posts_out

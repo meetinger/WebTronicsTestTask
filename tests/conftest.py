@@ -57,6 +57,7 @@ def app() -> Generator[FastAPI, Any, None]:
     Base.metadata.drop_all(engine)
 
 
+
 @pytest.fixture(scope="function")
 def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     """Использование сессии в тестах"""

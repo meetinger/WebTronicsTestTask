@@ -12,6 +12,9 @@ class ApiPaths(enum.Enum):
     view_attachment = '/attachments/view/'
     view_post = '/posts/view/'
     edit_post = '/posts/edit/'
+    info_current_user = '/users/info'
+    info_user = '/users/{user_id}/info'
+    user_posts = '/users/{user_id}/posts'
 
 
 def get_api_path(path_name: str, append_root_url=True) -> str:
