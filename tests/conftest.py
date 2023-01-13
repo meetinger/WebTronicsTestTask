@@ -124,7 +124,7 @@ def post(db_session):
 @pytest.fixture(scope="function")
 def reaction(db_session):
     def _reaction(user: User, entity: Base, reaction_type: str) -> Reaction:
-        reaction_data = ReactionData(entity_id_column=get_reaction_entity_id_column(clsname=entity.__class__.__name__),
+        reaction_data = ReactionData(entity_id_column=get_reaction_entity_id_column(clsname=entity.__class__.__name__.lower()),
                                      entity=entity,
                                      reaction_type=ReactionTypes[reaction_type].value, reaction_db=None)
         return create_reaction(reaction_data=reaction_data, db=db_session, current_user=user)

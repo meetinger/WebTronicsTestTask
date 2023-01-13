@@ -8,14 +8,18 @@ class ApiPaths(enum.Enum):
     """Пути API"""
     user_register = '/auth/register'
     get_token = '/auth/get_token'
-    create_post = '/posts/create'
+
     view_attachment = '/attachments/view/'
+
+    create_post = '/posts/create'
     view_post = '/posts/view/'
     edit_post = '/posts/edit/'
+
     info_current_user = '/users/info'
     info_user = '/users/{user_id}/info'
     user_posts = '/users/{user_id}/posts'
 
+    set_reaction = '/reactions/set'
 
 def get_api_path(path_name: str, append_root_url=True) -> str:
     """Получить ссылку на API метод"""
