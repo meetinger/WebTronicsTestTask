@@ -14,7 +14,7 @@ class PostIn(PostBase):
 class PostOut(PostBase):
     """Схема поста которая уходит клиентам"""
     id: int
-    attachments_urls: list[str] | None
+    attachments_urls: list[str] | list
     reactions_count: dict
 
     class Config:

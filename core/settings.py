@@ -34,6 +34,6 @@ class Settings:
     POST_ATTACHMENTS_PATH = 'storage/attachments/'
 
     # Attachments Test Storage
-    POST_TEST_ATTACHMENTS_PATH = 'storage/attachments_test/'
+    POST_TEST_ATTACHMENTS_DIR = 'attachments_test/'
 
 settings = Settings()

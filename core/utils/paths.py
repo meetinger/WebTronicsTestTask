@@ -1,17 +1,21 @@
+import enum
+from typing import Literal
 from urllib.parse import urljoin
 
 from core.settings import settings
 
-# словарь с путями
-API_PATHS_DICT = {
-    'user_register': '/auth/register',
-    'get_token': '/auth/get_token',
-    'create_post': '/posts/create',
-    'view_attachment': '/attachments/view/',
-    'view_post': '/posts/view'
-}
+class ApiPaths(enum.Enum):
+    """Пути API"""
+    user_register = '/auth/register'
+    get_token = '/auth/get_token'
+    create_post = '/posts/create'
+    view_attachment = '/attachments/view/'
+    view_post = '/posts/view/'
+    edit_post = '/posts/edit/'
+
+
 def get_api_path(path_name: str, append_root_url=True) -> str:
     """Получить ссылку на API метод"""
     if append_root_url:
-        return urljoin(settings.ROOT_URL, API_PATHS_DICT[path_name])
-    return API_PATHS_DICT[path_name]
+        return urljoin(settings.ROOT_URL, ApiPaths[path_name].value)
+    return ApiPaths[path_name].value

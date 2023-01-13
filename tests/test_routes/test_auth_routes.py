@@ -48,7 +48,8 @@ class TestRegister:
 
 
 class TestGetToken:
-    def test_get_token_ok(self, client, user_admin):
+    def test_get_token_ok(self, client, user):
+        user_admin = user(user_in=DATASET['users']['admin'])
         user_data = {
             'username': DATASET['users']['admin'].username,
             'password': DATASET['users']['admin'].password
@@ -58,7 +59,8 @@ class TestGetToken:
         resp_json = resp.json()
         assert all(key in resp_json for key in ('access_token', 'refresh_token', 'token_type'))
 
-    def test_get_token_invalid_credentials(self, client, user_admin):
+    def test_get_token_invalid_credentials(self, client, user):
+        user_admin = user(user_in=DATASET['users']['admin'])
         user_data = {
             'username': DATASET['users']['admin'].username + '_invalid',
             'password': DATASET['users']['admin'].password + '_invalid'
@@ -67,7 +69,8 @@ class TestGetToken:
         assert resp.status_code == 401
 
     @patch.object(settings, 'ALGORITHM')
-    def test_get_token_error_500(self, mocked_algorithm, client, user_admin):
+    def test_get_token_error_500(self, mocked_algorithm, client, user):
+        user_admin = user(user_in=DATASET['users']['admin'])
         mocked_algorithm.return_value = 'NOT_EXIST_ALGORITHM'
         user_data = {
             'username': DATASET['users']['admin'].username,
