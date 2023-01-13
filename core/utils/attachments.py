@@ -14,7 +14,7 @@ from core.utils.paths import get_api_path
 
 logger = logging.getLogger(__name__)
 
-def get_attachment_path() -> str:
+def get_attachments_path() -> str:
     """Путь хранения вложений"""
     return settings.POST_ATTACHMENTS_PATH
 
@@ -32,8 +32,8 @@ def gen_filename(content_type: str) -> str:
 
 
 def get_file_path(filename: str) -> str:
-    """Создание пути файла"""
-    return os.path.join(get_attachment_path(), filename)
+    """Получить путь файла"""
+    return os.path.join(get_attachments_path(), filename)
 
 def save_file(filename: str, file_bytes: bytes) -> bool:
     """Сохранить файл"""
@@ -45,8 +45,10 @@ def save_file(filename: str, file_bytes: bytes) -> bool:
 def delete_file(filename: str) -> bool:
     """Удалить файл"""
     file_path = get_file_path(filename)
-    os.remove(file_path)
-    return True
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return True
+    return False
 
 def get_view_url(filename: str) -> str:
     """Создание ссылки для просмотра картинки"""
