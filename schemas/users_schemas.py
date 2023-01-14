@@ -1,21 +1,23 @@
-from pydantic import EmailStr, BaseModel
+from pydantic import EmailStr, BaseModel, Field
 
 
 class UserBase(BaseModel):
-    username: str
-    name: str
+    username: str = Field(description='Username пользователя')
+    name: str = Field(description='Имя пользователя')
 
 
-class UserFull(UserBase):
+class UserEmail(UserBase):
+    email: EmailStr = Field(description='Email пользователя')
+
+
+class UserFull(UserEmail):
     """Полная схема пользователя"""
-    id: int
-    email: EmailStr
+    id: int = Field(description='id пользователя')
 
 
-class UserIn(UserBase):
+class UserIn(UserEmail):
     """Схема пользователя которая приходит от клиентов"""
-    email: EmailStr
-    password: str
+    password: str = Field(description='Пароль пользователя')
 
 
 class UserOut(UserFull):
@@ -24,13 +26,14 @@ class UserOut(UserFull):
     class Config:
         orm_mode = True
 
+
 class UserLimited(UserBase):
     """Схема пользователя скрывающая email"""
-    id: int
+    id: int = Field(description='id пользователя')
 
 
 class Token(BaseModel):
     """Схема токена"""
-    access_token: str
-    refresh_token: str | None
-    token_type: str
+    access_token: str = Field(description='Access токен')
+    refresh_token: str = Field(description='Refresh токен')
+    token_type: str = Field(description='Тип токена(Bearer)')

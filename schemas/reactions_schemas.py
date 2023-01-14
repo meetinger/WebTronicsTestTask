@@ -1,7 +1,7 @@
 import enum
 from dataclasses import dataclass
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import Column
 
 from db.database import Base
@@ -19,11 +19,16 @@ class ReactionTypes(enum.Enum):
     dislike = 2
 
 
-class ReactionIn(BaseModel):
+class ReactionBase(BaseModel):
     """Схема реакции"""
-    entity_type: str
-    entity_id: int
-    reaction_type: str
+    entity_type: str = Field(
+        description=f'Тип сущности. Доступные варианты: {", ".join(get_reactions_entities_types().keys())}')
+    entity_id: int = Field(description='id сущности, на которой реакция')
+    reaction_type: str = Field(
+        description=f'Тип реакции. Доступные варианты: {", ".join(i.name for i in ReactionTypes)}')
+
+class ReactionOut(ReactionBase):
+    user_id: int = Field(description='id пользователя, который поставил реакцию')
 
 
 @dataclass
@@ -34,14 +39,7 @@ class ReactionData:
     reaction_db: Reaction | None
 
 
-class ReactionOut(BaseModel):
-    id: int | None
-    reaction_type: str
-    entity_id: int
-    entity_type: str
-
-
-def verify_input_reaction(reaction: ReactionIn) -> bool:
+def verify_input_reaction(reaction: ReactionBase) -> bool:
     """Проверка корректности аттрибутов реакции"""
     return hasattr(ReactionEntities, reaction.entity_type) and hasattr(ReactionTypes, reaction.reaction_type)
 

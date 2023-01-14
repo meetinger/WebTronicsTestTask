@@ -4,7 +4,7 @@ from db.database import Base
 from db.models import Reaction
 from db.models import User
 from db.models.mixins_models import get_reactions_entities_types
-from schemas.reactions_schemas import ReactionIn, ReactionTypes, ReactionEntities, ReactionData, \
+from schemas.reactions_schemas import ReactionBase, ReactionTypes, ReactionEntities, ReactionData, \
     get_reaction_entity_id_column
 
 
@@ -18,6 +18,7 @@ def create_reaction(reaction_data: ReactionData, db: Session, current_user: User
     db.commit()
     db.refresh(reaction_db)
     return reaction_db
+
 
 def update_reaction(reaction_id: int, reaction_data: ReactionData, db: Session, current_user: User) -> Reaction:
     reaction_db = reaction_data.reaction_db
@@ -50,10 +51,8 @@ def get_reactions_count_for_entity(entity_db: Base, db: Session):
 
     reaction_types_dict = {i.name: i.value for i in ReactionTypes if i.name != 'unset'}
 
-    reactions_count_dict = {key:
-                                db.query(Reaction.id).filter_by(
+    reactions_count_dict = {key: db.query(Reaction.id).filter_by(
                                     **{reaction_entity_id_column.name: value}).count()
                             for key, value in reaction_types_dict.items()}
-
 
     return reactions_count_dict
