@@ -88,3 +88,26 @@ get_token_responses_examples = {
         }
     }
 }
+refresh_tokens_responses_examples = get_token_responses_examples | {403: {
+        "description": "Ошибка получения токенов",
+        "content": {
+            "application/json": {
+                "examples": {
+                    "wrong_token_type": {
+                        "summary": "Неправильный тип токена",
+                        "description": "Пример ответа при неправильном типе токена",
+                        "value": {
+                            "details": "Wrong token type"
+                        }
+                    },
+                    "token_expired": {
+                        "summary": "Токен истёк",
+                        "description": "Пример ответа при истёкшем токене",
+                        "value": {
+                            "details": "Token expired"
+                        }
+                    }
+                }
+            }
+        }
+    }}

@@ -39,3 +39,8 @@ class Token(BaseModel):
     access_token: str = Field(description='Access токен')
     refresh_token: str = Field(description='Refresh токен')
     token_type: str = Field(description='Тип токена(Bearer)')
+
+
+class RefreshTokenIn(BaseModel):
+    """Refresh токен"""
+    refresh_token: str = Field(description='Refresh токен')

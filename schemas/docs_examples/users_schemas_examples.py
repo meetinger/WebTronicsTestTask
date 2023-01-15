@@ -27,3 +27,11 @@ user_limited_examples = {
                   user_full_examples['default']['value'].items() if key != 'email'}
     }
 }
+
+refresh_token_in_examples = {
+    "default": {
+        "summary": "Refresh токен",
+        "description": "Пример refresh токена",
+        "value": {'refresh_token': 'RefreshTokenStr'}
+    }
+}
