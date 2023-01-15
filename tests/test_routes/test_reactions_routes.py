@@ -22,7 +22,7 @@ class TestSetReaction:
                            headers={'Authorization': f'Bearer {user_common_token["access_token"]}'})
 
         assert resp.status_code == 200
-        assert resp.json() == (data_json | {'user_id': user_common.id})
+        assert resp.json() == (data_json | {'user_id': user_common.id, 'is_deleted': False})
 
     def test_unset_reaction_ok(self, client, user, user_token, post, reaction):
         user_admin = user(user_in=DATASET['users']['admin'])
@@ -45,7 +45,7 @@ class TestSetReaction:
 
         assert resp.status_code == 200
         resp_json = resp.json()
-        assert resp_json == (data_json | {'user_id': user_common.id})
+        assert resp_json == (data_json | {'user_id': user_common.id, 'is_deleted': True})
 
     def test_update_reaction_ok(self, client, user, user_token, post, reaction):
         user_admin = user(user_in=DATASET['users']['admin'])
@@ -67,7 +67,7 @@ class TestSetReaction:
                            headers={'Authorization': f'Bearer {user_common_token["access_token"]}'})
 
         assert resp.status_code == 200
-        assert resp.json() == (data_json | {'user_id': user_common.id})
+        assert resp.json() == (data_json | {'user_id': user_common.id, 'is_deleted': False})
 
 
     def test_set_reaction_invalid_params(self, client, user, user_token):
