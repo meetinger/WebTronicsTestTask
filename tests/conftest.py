@@ -90,6 +90,9 @@ def client(monkeypatch, app: FastAPI, db_session: SessionTesting
     with TestClient(app) as client:
         yield client
 
+    files = os.listdir(settings.POST_TEST_ATTACHMENTS_DIR)
+    for file in files:
+        os.remove(os.path.join(settings.POST_TEST_ATTACHMENTS_DIR, file))
 
 @pytest.fixture(scope="function")
 def user(db_session):
@@ -109,16 +112,13 @@ def user_token():
 
 @pytest.fixture(scope="function")
 def post(db_session):
-    attachments_db = []
     def _post(user: User, post_data: dict) -> Post:
-        nonlocal attachments_db
         attachments = [UploadFile(*item) for _, item in post_data['attachments']]
         post_db = create_new_post(text=post_data['text'], attachments=attachments, current_user=user, db=db_session)
         attachments_db = post_db.attachments
         return post_db
 
     yield _post
-    delete_attachments(attachment_ids=[a.id for a in attachments_db], db=db_session)
 
 
 @pytest.fixture(scope="function")
