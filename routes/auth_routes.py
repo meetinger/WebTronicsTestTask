@@ -55,7 +55,7 @@ def authenticate_user(username: str, password: str, db: Session) -> sqlalchemy.o
 
 
 @router.post('/register', response_model=UserOut, responses=auth_routes_examples.register_responses_examples)
-async def register(user: UserIn = Body(..., examples=users_schemas_examples.user_in_examples), db: Session = Depends(get_db)):
+async def register(user: UserIn = Body(examples=users_schemas_examples.user_in_examples), db: Session = Depends(get_db)):
     """Эндпоинт регистрации пользователя"""
     if db.query(User.id).filter_by(email=user.email).first() is not None:
         e = HTTPException(status_code=409, detail='This email already exist!')
