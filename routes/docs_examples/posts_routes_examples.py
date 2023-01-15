@@ -1,15 +1,4 @@
-from core.utils.attachments import get_view_url
-from schemas.reactions_schemas import ReactionTypes
-
-default_post_value = {
-    "id": 1,
-    "text": "Post text",
-    "user_id": 1,
-    "reactions_count": None,
-    "attachment_urls": [get_view_url(fn) for fn in ("attachment1.png", "attachment2.png")]
-}
-
-reactions_count_not_empty = {item.name: idx for idx, item in enumerate(ReactionTypes)}
+import schemas.docs_examples.posts_schemas_examples as posts_schemas_examples
 
 create_post_responses_examples = {
     200: {
@@ -20,7 +9,7 @@ create_post_responses_examples = {
                     "default": {
                         "summary": "Успешное создание поста",
                         "description": "Пример ответа при успешном создании поста",
-                        "value": default_post_value
+                        "value": posts_schemas_examples.post_out_without_reaction_count_examples['default']['value']
                     }
                 }
             }
@@ -36,7 +25,7 @@ view_post_responses_examples = {
                     "default": {
                         "summary": "Успешное получение поста",
                         "description": "Пример ответа при успешном получении поста",
-                        "value": default_post_value | {'reactions_count': reactions_count_not_empty}
+                        "value": posts_schemas_examples.post_out_with_reaction_count_examples['default']['value']
                     }
                 }
             }
@@ -69,7 +58,7 @@ edit_post_responses_examples = {
                     "default": {
                         "summary": "Успешное редактирование поста",
                         "description": "Пример ответа при успешном редактирование поста",
-                        "value": default_post_value | {'reactions_count': reactions_count_not_empty}
+                        "value": posts_schemas_examples.post_out_with_reaction_count_examples['default']['value']
                     }
                 }
             }

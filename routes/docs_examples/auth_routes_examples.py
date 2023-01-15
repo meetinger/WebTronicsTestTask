@@ -1,4 +1,4 @@
-from schemas.docs_examples.users_examples import user_in_examples
+from schemas.docs_examples.users_schemas_examples import user_full_examples
 
 register_responses_examples = {
     200: {
@@ -9,8 +9,7 @@ register_responses_examples = {
                     "success": {
                         "summary": "Успешная регистрация",
                         "description": "Пример ответа при успешной регистрации",
-                        "value": {'id': 1} | {key: value for key, value in
-                                  user_in_examples['default']['value'].items() if key != 'password'}
+                        "value": user_full_examples['default']['value']
                     }
                 }
             }
@@ -37,7 +36,7 @@ register_responses_examples = {
     }
 }
 
-get_token_examples = {
+get_token_responses_examples = {
     200: {
         "description": "Успешное получение токенов",
         "content": {

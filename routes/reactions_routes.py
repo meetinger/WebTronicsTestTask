@@ -1,6 +1,8 @@
 import logging
+import routes.docs_examples.reactions_routes_examples as reactions_routes_examples
+import schemas.docs_examples.reactions_schemas_examples as reactions_schemas_examples
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy.orm import Session
 
 from db.crud.reactions_cruds import create_reaction, update_reaction, delete_reaction
@@ -15,8 +17,8 @@ router = APIRouter(prefix="/reactions", tags=['reactions'])
 logger = logging.getLogger(__name__)
 
 
-@router.post('/set', response_model=ReactionOut)
-async def set_reaction(reaction: ReactionBase, db: Session = Depends(get_db),
+@router.post('/set', response_model=ReactionOut, responses=reactions_routes_examples.set_reaction_responses_examples)
+async def set_reaction(reaction: ReactionBase = Body(examples=reactions_schemas_examples.reaction_base_examples), db: Session = Depends(get_db),
                        current_user: User = Depends(get_current_user_from_token)):
     """Эндпоинт для установки реакций"""
     if not verify_input_reaction(reaction):
@@ -52,12 +54,12 @@ async def set_reaction(reaction: ReactionBase, db: Session = Depends(get_db),
             delete_reaction(reaction_id=reaction_db.id, reaction_data=reaction_data, db=db,
                             current_user=current_user)
             return ReactionOut(reaction_type=reaction.reaction_type, entity_id=reaction.entity_id, user_id=current_user.id,
-                               entity_type=reaction.entity_type)
+                               entity_type=reaction.entity_type, is_deleted=True)
         if ReactionTypes[reaction.reaction_type].value == reaction_db.type:
             raise HTTPException(status_code=409, detail='Reaction with current parameters already set!')
         reaction_data.reaction_db = reaction_db
 
         reaction_db = update_reaction(reaction_id=reaction_db.id, reaction_data=reaction_data, db=db,
                                       current_user=current_user)
-    return ReactionOut(id=reaction_db.id, reaction_type=reaction.reaction_type, entity_id=reaction.entity_id, user_id=current_user.id,
-                       entity_type=reaction.entity_type)
+    return ReactionOut(reaction_type=reaction.reaction_type, entity_id=reaction.entity_id, user_id=current_user.id,
+                       entity_type=reaction.entity_type, is_deleted=False)

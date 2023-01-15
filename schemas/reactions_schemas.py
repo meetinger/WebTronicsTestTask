@@ -29,6 +29,7 @@ class ReactionBase(BaseModel):
 
 class ReactionOut(ReactionBase):
     user_id: int = Field(description='id пользователя, который поставил реакцию')
+    is_deleted: bool = Field(description='Была ли удалена реакция')
 
 
 @dataclass

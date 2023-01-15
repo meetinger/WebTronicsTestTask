@@ -1,5 +1,5 @@
 import logging
-import routes.docs_examples.posts_examples as posts_examples
+import routes.docs_examples.posts_routes_examples as posts_routes_examples
 
 from fastapi import APIRouter, Depends, UploadFile, Form, HTTPException, Body, Query, Path
 from sqlalchemy.orm import Session
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/posts", tags=['posts'])
 logger = logging.getLogger(__name__)
 
 
-@router.post('/create', response_model=PostOut, responses=posts_examples.create_post_responses_examples)
+@router.post('/create', response_model=PostOut, responses=posts_routes_examples.create_post_responses_examples)
 async def create_post(attachments: list[UploadFile] = Form(default=[], description="Вложения к посту"),
                       text: str = Form(description="Текст поста"),
                       current_user: User = Depends(get_current_user_from_token),
@@ -31,7 +31,7 @@ async def create_post(attachments: list[UploadFile] = Form(default=[], descripti
     return post_out
 
 
-@router.get('/view/{post_id}', response_model=PostOut, responses=posts_examples.view_post_responses_examples)
+@router.get('/view/{post_id}', response_model=PostOut, responses=posts_routes_examples.view_post_responses_examples)
 async def view_post(post_id: int = Path(description="id поста"), db: Session = Depends(get_db)):
     """Посмотреть пост"""
     post_db = get_post(post_id=post_id, db=db)
@@ -43,7 +43,7 @@ async def view_post(post_id: int = Path(description="id поста"), db: Sessio
     return post_out
 
 
-@router.put('/edit/{post_id}', response_model=PostOut, responses=posts_examples.edit_post_responses_examples)
+@router.put('/edit/{post_id}', response_model=PostOut, responses=posts_routes_examples.edit_post_responses_examples)
 async def edit_post(post_id: int = Path(description="id поста"),
                     attachments: list[UploadFile] = Form(default=[], description="Вложения к посту"),
                     text: str = Form(description="Текст поста"),

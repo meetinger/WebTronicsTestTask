@@ -1,6 +1,6 @@
 import logging
-import schemas.docs_examples.users_examples as users_examples
-import routes.docs_examples.auth_examples as auth_examples
+import schemas.docs_examples.users_schemas_examples as users_schemas_examples
+import routes.docs_examples.auth_routes_examples as auth_routes_examples
 
 import sqlalchemy
 from fastapi import APIRouter, HTTPException, Body
@@ -54,8 +54,8 @@ def authenticate_user(username: str, password: str, db: Session) -> sqlalchemy.o
     return user
 
 
-@router.post('/register', response_model=UserOut, responses=auth_examples.register_responses_examples)
-async def register(user: UserIn = Body(..., examples=users_examples.user_in_examples), db: Session = Depends(get_db)):
+@router.post('/register', response_model=UserOut, responses=auth_routes_examples.register_responses_examples)
+async def register(user: UserIn = Body(..., examples=users_schemas_examples.user_in_examples), db: Session = Depends(get_db)):
     """Эндпоинт регистрации пользователя"""
     if db.query(User.id).filter_by(email=user.email).first() is not None:
         e = HTTPException(status_code=409, detail='This email already exist!')
@@ -68,7 +68,7 @@ async def register(user: UserIn = Body(..., examples=users_examples.user_in_exam
     return create_new_user(user=user, db=db)
 
 
-@router.post('/get_token', response_model=Token, responses=auth_examples.get_token_examples)
+@router.post('/get_token', response_model=Token, responses=auth_routes_examples.get_token_responses_examples)
 async def get_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     """Получение пары токенов"""
     user = authenticate_user(username=form_data.username, password=form_data.password, db=db)
