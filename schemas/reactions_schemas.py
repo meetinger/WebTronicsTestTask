@@ -18,29 +18,35 @@ class ReactionTypes(enum.Enum):
     like = 1
     dislike = 2
 
-
 class ReactionBase(BaseModel):
-    """Схема реакции"""
+    """Базовая схема реакции"""
     entity_type: str = Field(
         description=f'Тип сущности. Доступные варианты: {", ".join(get_reactions_entities_types().keys())}')
     entity_id: int = Field(description='id сущности, на которой реакция')
     reaction_type: str = Field(
         description=f'Тип реакции. Доступные варианты: {", ".join(i.name for i in ReactionTypes)}')
 
+class ReactionIn(ReactionBase):
+    """Входная схема реакции"""
+    pass
+
+
 class ReactionOut(ReactionBase):
+    """Выходная схема реакций"""
     user_id: int = Field(description='id пользователя, который поставил реакцию')
     is_deleted: bool = Field(description='Была ли удалена реакция')
 
 
 @dataclass
 class ReactionData:
+    """Данные реакции для внутренней логики"""
     entity_id_column: Column
     entity: Base
     reaction_type: int
     reaction_db: Reaction | None
 
 
-def verify_input_reaction(reaction: ReactionBase) -> bool:
+def verify_input_reaction(reaction: ReactionIn) -> bool:
     """Проверка корректности аттрибутов реакции"""
     return hasattr(ReactionEntities, reaction.entity_type) and hasattr(ReactionTypes, reaction.reaction_type)
 

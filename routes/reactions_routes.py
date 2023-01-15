@@ -9,7 +9,7 @@ from db.crud.reactions_cruds import create_reaction, update_reaction, delete_rea
 from db.database import get_db
 from db.models import User, Reaction
 from routes.auth_routes import get_current_user_from_token
-from schemas.reactions_schemas import ReactionBase, verify_input_reaction, get_reaction_entity_type, \
+from schemas.reactions_schemas import ReactionIn, verify_input_reaction, get_reaction_entity_type, \
     get_reaction_entity_id_column, ReactionData, ReactionTypes, ReactionOut
 
 router = APIRouter(prefix="/reactions", tags=['reactions'])
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.post('/set', response_model=ReactionOut, responses=reactions_routes_examples.set_reaction_responses_examples)
-async def set_reaction(reaction: ReactionBase = Body(examples=reactions_schemas_examples.reaction_base_examples), db: Session = Depends(get_db),
+async def set_reaction(reaction: ReactionIn = Body(examples=reactions_schemas_examples.reaction_base_examples), db: Session = Depends(get_db),
                        current_user: User = Depends(get_current_user_from_token)):
     """Эндпоинт для установки реакций"""
     if not verify_input_reaction(reaction):
