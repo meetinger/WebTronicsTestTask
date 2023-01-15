@@ -32,7 +32,7 @@ async def info_user_by_id(user_id: int, db: Session = Depends(get_db),
     return sqlalchemy_to_pydantic_or_dict(UserLimited, user_db)
 
 
-@router.get('/{user_id}/posts', response_model=list[PostOut], responses=users_routes_examples.posts_responses_examples)
+@router.get('/{user_id}/posts', response_model=list[PostOut], responses=users_routes_examples.posts_responses_examples, tags=['posts'])
 async def user_posts(user_id: int, db: Session = Depends(get_db),
                      current_user: User = Depends(get_current_user_from_token)):
     """Получение постов пользователя"""
