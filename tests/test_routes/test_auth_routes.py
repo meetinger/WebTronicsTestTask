@@ -1,4 +1,5 @@
-from unittest.mock import patch
+import time
+from unittest.mock import patch, PropertyMock
 
 import pytest
 
@@ -68,13 +69,41 @@ class TestGetToken:
         resp = client.post(get_api_path('get_token', append_root_url=False), data=user_data)
         assert resp.status_code == 401
 
-    @patch.object(settings, 'ALGORITHM')
-    def test_get_token_error_500(self, mocked_algorithm, client, user):
+    @patch.object(settings, 'ALGORITHM', 'NOT_EXIST_ALGORITHM')
+    def test_get_token_error_500(self, client, user):
         user_admin = user(user_in=DATASET['users']['admin'])
-        mocked_algorithm.return_value = 'NOT_EXIST_ALGORITHM'
         user_data = {
             'username': DATASET['users']['admin'].username,
             'password': DATASET['users']['admin'].password
         }
         resp = client.post(get_api_path('get_token', append_root_url=False), data=user_data)
         assert resp.status_code == 500
+
+class TestRefreshTokens:
+    def test_refresh_tokens_ok(self, client, user, user_token):
+        user_admin = user(user_in=DATASET['users']['admin'])
+        admin_token = user_token(user=user_admin)
+        resp = client.post(get_api_path('refresh_tokens', append_root_url=False), json={'refresh_token': admin_token['refresh_token']})
+        assert resp.status_code == 200
+        resp_json = resp.json()
+        assert all(key in resp_json for key in ('access_token', 'refresh_token', 'token_type'))
+
+    def test_refresh_tokens_wrong_token_type(self, client, user, user_token):
+        user_admin = user(user_in=DATASET['users']['admin'])
+        admin_token = user_token(user=user_admin)
+        resp = client.post(get_api_path('refresh_tokens', append_root_url=False), json={'refresh_token': admin_token['access_token']})
+        assert resp.status_code == 403
+
+    @patch.object(settings, 'REFRESH_TOKEN_EXPIRE_MINUTES', -1)
+    def test_refresh_tokens_wrong_token_type(self, client, user, user_token):
+        user_admin = user(user_in=DATASET['users']['admin'])
+        admin_token = user_token(user=user_admin)
+        resp = client.post(get_api_path('refresh_tokens', append_root_url=False), json={'refresh_token': admin_token['refresh_token']})
+        assert resp.status_code == 403
+
+    def test_refresh_tokens_invalid_credentials(self, client, user, user_token):
+        user_admin = user(user_in=DATASET['users']['admin'])
+        admin_token = user_token(user=user_admin)
+        resp = client.post(get_api_path('refresh_tokens', append_root_url=False),
+                           json={'refresh_token': admin_token['refresh_token']+'_invalid'})
+        assert resp.status_code == 401

@@ -8,6 +8,7 @@ class ApiPaths(enum.Enum):
     """Пути API"""
     user_register = '/auth/register'
     get_token = '/auth/get_token'
+    refresh_tokens = '/auth/refresh_tokens'
 
     view_attachment = '/attachments/view/'
 

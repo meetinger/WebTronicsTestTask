@@ -19,9 +19,6 @@ def test_post_create(client, user, user_token, db_session):
     assert resp_json['text'] == data['text']
     assert 'reactions_count' in resp_json
     assert len(resp_json['attachments_urls']) == len(data['attachments'])
-    attachments_filenames = [a_url.rsplit('/', maxsplit=1)[-1] for a_url in resp_json['attachments_urls']]
-    for filename in attachments_filenames:
-        delete_file(filename)
 
 def test_view_post(client, user, user_token, post):
     user_admin = user(user_in=DATASET['users']['admin'])
