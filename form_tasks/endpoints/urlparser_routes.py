@@ -23,7 +23,7 @@ class EncodedURL(BaseModel):
     class Config:
         schema_extra = {
             'example': {
-                'url': 'http%3A//example.com/%3Fq%3Dsearch'
+                'encoded_url': 'http%3A//example.com/%3Fq%3Dsearch'
             }
         }
 
@@ -36,7 +36,7 @@ def encode_url(url: str) -> str:
     return urllib.parse.quote(url)
 
 
-@router.get('/encode_url', response_model=EncodedURL)
+@router.get('/encode_url/', response_model=EncodedURL)
 async def encode_url_query(url: str = Query(description='Ссылка, которую нужно закодировать', example='http://example.com/?q=search')):
     return EncodedURL(encoded_url=encode_url(decode_url(url)))
 
