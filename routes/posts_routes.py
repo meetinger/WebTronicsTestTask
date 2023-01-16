@@ -36,7 +36,7 @@ async def view_post(post_id: int = Path(description="id поста"), db: Sessio
     """Посмотреть пост"""
     post_db = get_post(post_id=post_id, db=db)
     if post_db is None:
-        return HTTPException(status_code=404, detail='Post not found')
+        raise HTTPException(status_code=404, detail='Post not found')
     reactions_count_dict = get_reactions_count_for_entity(entity_db=post_db, db=db)
     post_out = PostOut(id=post_db.id, text=post_db.text, reactions_count=reactions_count_dict, user_id=post_db.user_id,
                        attachments_urls=[get_view_url(attachment.filename) for attachment in post_db.attachments])
@@ -54,7 +54,7 @@ async def edit_post(post_id: int = Path(description="id поста"),
         attachments = []
     post_user_id = db.query(Post.user_id).filter_by(id=post_id).first()[0]
     if post_user_id is None:
-        return HTTPException(status_code=404, detail='Post not found')
+        raise HTTPException(status_code=404, detail='Post not found')
     if post_user_id != current_user.id:
         raise HTTPException(status_code=403, detail='This post was created by another user!')
     post_db = update_post(post_id=post_id, text=text, attachments=attachments, db=db)
