@@ -1,5 +1,5 @@
-import schemas.docs_examples.users_schemas_examples as users_schemas_examples
 import schemas.docs_examples.posts_schemas_examples as posts_schemas_examples
+import schemas.docs_examples.users_schemas_examples as users_schemas_examples
 
 info_current_user_responses_examples = {
     200: {

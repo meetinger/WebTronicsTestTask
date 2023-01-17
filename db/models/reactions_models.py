@@ -1,7 +1,8 @@
-from sqlalchemy import Column, ForeignKey, Integer, Enum
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from db.database import Base
+
 
 class Reaction(Base):
     """Класс реакции"""

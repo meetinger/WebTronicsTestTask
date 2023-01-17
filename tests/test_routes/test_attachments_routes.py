@@ -1,7 +1,4 @@
-from pprint import pprint
-
 from core.utils.attachments import get_view_url, delete_file
-from core.utils.paths import get_api_path
 from tests.conftest import DATASET
 
 class TestViewAttachment:

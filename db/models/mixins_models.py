@@ -1,7 +1,4 @@
-import enum
-from typing import Type
-
-from sqlalchemy import Column, ForeignKey, Integer, UniqueConstraint
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship, declarative_mixin, declared_attr
 
 from db.models.reactions_models import Reaction

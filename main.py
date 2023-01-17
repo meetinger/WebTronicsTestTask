@@ -1,6 +1,5 @@
 from logging.config import dictConfig
 
-import uvicorn
 from fastapi import FastAPI
 
 from core.settings import settings

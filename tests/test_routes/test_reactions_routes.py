@@ -1,4 +1,3 @@
-from core.utils.misc import is_dicts_equals
 from core.utils.paths import get_api_path
 from tests.conftest import DATASET
 

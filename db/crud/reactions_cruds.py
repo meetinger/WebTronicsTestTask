@@ -3,8 +3,7 @@ from sqlalchemy.orm import Session
 from db.database import Base
 from db.models import Reaction
 from db.models import User
-from db.models.mixins_models import get_reactions_entities_types
-from schemas.reactions_schemas import ReactionIn, ReactionTypes, ReactionEntities, ReactionData, \
+from schemas.reactions_schemas import ReactionTypes, ReactionData, \
     get_reaction_entity_id_column
 
 

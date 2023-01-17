@@ -1,6 +1,5 @@
 from pprint import pprint
 
-from core.utils.attachments import delete_file
 from core.utils.paths import get_api_path
 from tests.conftest import DATASET
 

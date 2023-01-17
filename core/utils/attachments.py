@@ -1,12 +1,8 @@
 import logging
 import mimetypes
 import os
-import random
-import string
-from typing import IO, Generator
+from typing import IO
 from urllib.parse import urljoin
-
-from fastapi import Depends
 
 from core.settings import settings
 from core.utils.misc import gen_random_str

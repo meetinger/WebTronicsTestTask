@@ -1,12 +1,12 @@
 import logging
 import os.path
-import core.utils.attachments as attachment_utils
-import routes.docs_examples.attachments_routes_examples as attachment_routes_examples
 
 from fastapi import APIRouter, Depends, HTTPException, Path
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
+import core.utils.attachments as attachment_utils
+import routes.docs_examples.attachments_routes_examples as attachment_routes_examples
 from db.crud.attachments_cruds import get_attachment_by_filename
 from db.database import get_db
 

@@ -1,26 +1,18 @@
-import functools
 import os
 import pathlib
-
-import pytest
-
-import core.utils.attachments
-
 from io import BytesIO
-from pprint import pprint
-from unittest.mock import patch
-
 from typing import Generator, Any
 
+import pytest
 from PIL import Image
 from fastapi import FastAPI, UploadFile
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+import core.utils.attachments
 from core.security import TokenUtils
 from core.settings import settings
-from db.crud.attachments_cruds import delete_attachments
 from db.crud.posts_cruds import create_new_post
 from db.crud.reactions_cruds import create_reaction
 from db.crud.users_crud import create_new_user

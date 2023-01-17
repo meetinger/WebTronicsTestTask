@@ -2,10 +2,10 @@ import ast
 import asyncio
 import pathlib
 import threading
-import docker
-import aiohttp
-import pytest
 
+import aiohttp
+import docker
+import pytest
 from docker.models.containers import Container
 
 

@@ -1,8 +1,4 @@
 import logging
-from typing import Literal
-
-import schemas.docs_examples.users_schemas_examples as users_schemas_examples
-import routes.docs_examples.auth_routes_examples as auth_routes_examples
 
 import sqlalchemy
 from fastapi import APIRouter, HTTPException, Body
@@ -11,6 +7,8 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import ExpiredSignatureError
 from sqlalchemy.orm import Session
 
+import routes.docs_examples.auth_routes_examples as auth_routes_examples
+import schemas.docs_examples.users_schemas_examples as users_schemas_examples
 from core.security import PasswordUtils, TokenUtils
 from db.crud.users_crud import create_new_user, get_user
 from db.database import get_db

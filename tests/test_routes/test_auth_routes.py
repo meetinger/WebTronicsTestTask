@@ -1,13 +1,13 @@
-import time
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch
 
 import pytest
-
 from faker import Faker
-from tests.conftest import DATASET
+
+from core.settings import settings
 from core.utils.misc import gen_random_str, is_dicts_equals
 from core.utils.paths import get_api_path
-from core.settings import settings
+from tests.conftest import DATASET
+
 
 class TestRegister:
     fake = Faker()

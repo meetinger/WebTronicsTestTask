@@ -1,8 +1,8 @@
 import enum
-from typing import Literal
 from urllib.parse import urljoin
 
 from core.settings import settings
+
 
 class ApiPaths(enum.Enum):
     """Пути API"""

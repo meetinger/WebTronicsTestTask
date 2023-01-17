@@ -1,10 +1,10 @@
 import logging
-import routes.docs_examples.reactions_routes_examples as reactions_routes_examples
-import schemas.docs_examples.reactions_schemas_examples as reactions_schemas_examples
 
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy.orm import Session
 
+import routes.docs_examples.reactions_routes_examples as reactions_routes_examples
+import schemas.docs_examples.reactions_schemas_examples as reactions_schemas_examples
 from db.crud.reactions_cruds import create_reaction, update_reaction, delete_reaction
 from db.database import get_db
 from db.models import User, Reaction

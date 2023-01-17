@@ -1,8 +1,7 @@
-import routes.docs_examples.users_routes_examples as users_routes_examples
-
 from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 
+import routes.docs_examples.users_routes_examples as users_routes_examples
 from core.utils.attachments import get_view_url
 from core.utils.serialization import sqlalchemy_to_pydantic_or_dict
 from db.database import get_db
